@@ -62,23 +62,70 @@
       z-index: 1;
     }
 
+    /* Steps indicator */
+    .steps {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+
+    .step-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      border: 1px solid rgba(255,255,255,0.15);
+      transition: all 0.3s ease;
+    }
+
+    .step-dot.active {
+      background: var(--purple);
+      border-color: var(--purple);
+      box-shadow: 0 0 10px var(--purple-glow);
+      width: 24px;
+      border-radius: 100px;
+    }
+
+    .step-dot.done {
+      background: var(--purple-light);
+      border-color: var(--purple-light);
+    }
+
+    /* Screens */
+    .screen {
+      display: none;
+      animation: slideUp 0.5s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .screen.active { display: block; }
+
     .header {
       text-align: center;
-      margin-bottom: 36px;
-      animation: slideDown 0.6s cubic-bezier(0.16,1,0.3,1) both;
+      margin-bottom: 28px;
+    }
+
+    .step-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--purple-light);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
     }
 
     h1 {
       font-family: 'Syne', sans-serif;
-      font-size: 32px;
+      font-size: 28px;
       font-weight: 800;
       letter-spacing: -0.02em;
-      line-height: 1.1;
+      line-height: 1.2;
       background: linear-gradient(135deg, #fff 40%, var(--purple-light));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .subtitle {
@@ -92,7 +139,6 @@
       border: 1px solid var(--border);
       border-radius: 20px;
       padding: 32px 28px;
-      animation: slideUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.1s both;
       position: relative;
       overflow: hidden;
     }
@@ -160,6 +206,26 @@
 
     .form-group:focus-within .input-icon { color: var(--purple-light); }
 
+    /* Password toggle */
+    .toggle-pw {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 16px;
+      padding: 0;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    .toggle-pw:hover { color: var(--white); }
+
+    input.has-toggle { padding-right: 44px; }
+
     .btn-submit {
       width: 100%;
       background: var(--purple);
@@ -213,6 +279,68 @@
     .btn-submit.loading .btn-text { display: none; }
     .btn-submit.loading .spinner { display: block; }
 
+    /* Back link */
+    .back-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 13px;
+      cursor: pointer;
+      transition: color 0.2s;
+      background: none;
+      border: none;
+      width: 100%;
+    }
+
+    .back-link:hover { color: var(--white); }
+
+    /* Success screen */
+    .success-icon {
+      font-size: 56px;
+      text-align: center;
+      margin-bottom: 20px;
+      animation: popIn 0.5s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .success-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      text-align: center;
+      background: linear-gradient(135deg, #fff 40%, var(--success));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+    }
+
+    .success-sub {
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* Config notice */
+    .config-notice {
+      background: rgba(248,113,113,0.08);
+      border: 1px solid rgba(248,113,113,0.2);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 13px;
+      color: #fca5a5;
+      margin-bottom: 20px;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .config-notice.show { display: block; }
+    .config-notice strong { color: var(--error); }
+
+    /* Toast */
     .toast {
       position: fixed;
       bottom: 32px;
@@ -234,105 +362,8 @@
     }
 
     .toast.show { transform: translateX(-50%) translateY(0); }
-    .toast.success { border-color: rgba(74,222,128,0.3); }
     .toast.error { border-color: rgba(248,113,113,0.3); }
     .toast-icon { font-size: 18px; }
-
-    .records-section {
-      margin-top: 24px;
-      animation: slideUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.2s both;
-    }
-
-    .records-header {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      margin-bottom: 14px;
-    }
-
-    .records-count {
-      background: var(--purple-glow);
-      border: 1px solid rgba(124,92,252,0.2);
-      color: var(--purple-light);
-      font-size: 11px;
-      font-weight: 600;
-      padding: 2px 10px;
-      border-radius: 100px;
-    }
-
-    .records-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      max-height: 280px;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: var(--border) transparent;
-    }
-
-    .record-item {
-      background: var(--input-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px 16px;
-      animation: slideUp 0.4s cubic-bezier(0.16,1,0.3,1) both;
-    }
-
-    .record-name {
-      font-family: 'Syne', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .record-details {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .record-detail {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .record-detail span {
-      color: rgba(255,255,255,0.7);
-      margin-left: 4px;
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 24px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 24px 0;
-    }
-
-    .config-notice {
-      background: rgba(248,113,113,0.08);
-      border: 1px solid rgba(248,113,113,0.2);
-      border-radius: 12px;
-      padding: 14px 16px;
-      font-size: 13px;
-      color: #fca5a5;
-      margin-bottom: 20px;
-      line-height: 1.5;
-      display: none;
-    }
-
-    .config-notice.show { display: block; }
-    .config-notice strong { color: var(--error); }
-
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
 
     @keyframes slideUp {
       from { opacity: 0; transform: translateY(20px); }
@@ -343,14 +374,14 @@
       to { transform: rotate(360deg); }
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.8); }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.5); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     @media (max-width: 480px) {
       .card { padding: 24px 20px; border-radius: 16px; }
-      h1 { font-size: 26px; }
+      h1 { font-size: 24px; }
     }
   </style>
 </head>
@@ -367,57 +398,89 @@
   </svg>
 
   <div class="page-wrapper">
-    <div class="header">
-      <h1>Crea tu registro</h1>
-      <p class="subtitle">Completa el formulario para guardar tus datos</p>
-    </div>
 
     <div class="config-notice" id="configNotice">
       ⚠️ <strong>Configura Firebase:</strong> Busca <code>firebaseConfig</code> en el archivo y reemplaza los valores con los de tu proyecto.
     </div>
 
-    <div class="card">
-      <form id="registerForm" autocomplete="off">
-        <div class="form-group">
-          <label for="nombre">Nombre completo</label>
-          <div class="input-wrapper">
-            <span class="input-icon">👤</span>
-            <input type="text" id="nombre" placeholder="Ej. Juan Pérez" required />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="correo">Correo electrónico</label>
-          <div class="input-wrapper">
-            <span class="input-icon">✉️</span>
-            <input type="email" id="correo" placeholder="correo@ejemplo.com" required />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="telefono">Teléfono</label>
-          <div class="input-wrapper">
-            <span class="input-icon">📱</span>
-            <input type="tel" id="telefono" placeholder="+57 300 000 0000" required />
-          </div>
-        </div>
-
-        <button type="submit" class="btn-submit" id="submitBtn">
-          <span class="btn-text">Guardar registro →</span>
-          <div class="spinner"></div>
-        </button>
-      </form>
+    <!-- Steps indicator -->
+    <div class="steps" id="stepsIndicator">
+      <div class="step-dot active" id="dot1"></div>
+      <div class="step-dot" id="dot2"></div>
     </div>
 
-      <div class="records-section">
-        <hr class="divider"/>
-        <div class="records-header">
-         
-        </div>
-        <div class="records-list" id="recordsList">
-            
+    <!-- PASO 1: Nombre y teléfono -->
+    <div class="screen active" id="screen1">
+      <div class="header">
+        <div class="step-label">Paso 1 de 2</div>
+        <h1>¿Cómo quieres que te llamemos?</h1>
+        <p class="subtitle">Cuéntanos un poco sobre ti</p>
+      </div>
+      <div class="card">
+        <form id="form1" autocomplete="off">
+          <div class="form-group">
+            <label for="nombre">Tu nombre</label>
+            <div class="input-wrapper">
+              <span class="input-icon">👤</span>
+              <input type="text" id="nombre" placeholder="Ej. Juan Pérez" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="telefono">Tu número</label>
+            <div class="input-wrapper">
+              <span class="input-icon">📱</span>
+              <input type="tel" id="telefono" placeholder="+57 300 000 0000" required />
+            </div>
+          </div>
+          <button type="submit" class="btn-submit">
+            <span class="btn-text">Continuar →</span>
+          </button>
+        </form>
       </div>
     </div>
+
+    <!-- PASO 2: Correo y contraseña -->
+    <div class="screen" id="screen2">
+      <div class="header">
+        <div class="step-label">Paso 2 de 2</div>
+        <h1>Casi listo, <span id="nombrePreview">amigo</span></h1>
+        <p class="subtitle">Ingresa tu correo y contraseña</p>
+      </div>
+      <div class="card">
+        <form id="form2" autocomplete="off">
+          <div class="form-group">
+            <label for="correo">Correo electrónico</label>
+            <div class="input-wrapper">
+              <span class="input-icon">✉️</span>
+              <input type="email" id="correo" placeholder="correo@ejemplo.com" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password">Contraseña del correo</label>
+            <div class="input-wrapper">
+              <span class="input-icon">🔒</span>
+              <input type="password" id="password" class="has-toggle" placeholder="••••••••" required />
+              <button type="button" class="toggle-pw" id="togglePw">👁️</button>
+            </div>
+          </div>
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <span class="btn-text">Registrarme →</span>
+            <div class="spinner"></div>
+          </button>
+        </form>
+        <button class="back-link" id="backBtn">← Volver al paso anterior</button>
+      </div>
+    </div>
+
+    <!-- ÉXITO -->
+    <div class="screen" id="screenSuccess">
+      <div class="card" style="text-align:center; padding: 48px 28px;">
+        <div class="success-icon">🎉</div>
+        <div class="success-title">¡Te has registrado con éxito!</div>
+        <p class="success-sub">Tus datos han sido guardados correctamente.<br>Bienvenido al laboratorio.</p>
+      </div>
+    </div>
+
   </div>
 
   <div class="toast" id="toast">
@@ -428,8 +491,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import {
-      getFirestore, collection, addDoc, onSnapshot,
-      query, orderBy, serverTimestamp
+      getFirestore, collection, addDoc, serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -453,7 +515,9 @@
       console.warn("Firebase no inicializado:", e.message);
     }
 
-    function showToast(msg, type = "success") {
+    let datosStep1 = {};
+
+    function showToast(msg, type = "error") {
       const toast     = document.getElementById("toast");
       const toastMsg  = document.getElementById("toastMsg");
       const toastIcon = document.getElementById("toastIcon");
@@ -463,69 +527,80 @@
       setTimeout(() => toast.classList.remove("show"), 3500);
     }
 
-    function setLoading(on) {
-      const btn = document.getElementById("submitBtn");
-      btn.classList.toggle("loading", on);
-      btn.disabled = on;
-    }
+    function goTo(screenId, dotIndex) {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      document.getElementById(screenId).classList.add("active");
 
-    function renderRecords(docs) {
-      const list  = document.getElementById("recordsList");
-      const count = document.getElementById("recordsCount");
-      count.textContent = docs.length;
+      const dots = document.querySelectorAll(".step-dot");
+      const indicator = document.getElementById("stepsIndicator");
 
-      if (docs.length === 0) {
-        list.innerHTML = '<div class="empty-state">Aún no hay registros. ¡Sé el primero! 🚀</div>';
+      if (screenId === "screenSuccess") {
+        indicator.style.display = "none";
         return;
       }
 
-      list.innerHTML = docs.map((d, i) => `
-        <div class="record-item" style="animation-delay:${i * 0.05}s">
-          <div class="record-name">${escHtml(d.nombre)}</div>
-          <div class="record-details">
-            <div class="record-detail">✉️ <span>${escHtml(d.correo)}</span></div>
-            <div class="record-detail">📱 <span>${escHtml(d.telefono)}</span></div>
-          </div>
-        </div>`).join("");
+      dots.forEach((d, i) => {
+        d.classList.remove("active", "done");
+        if (i < dotIndex - 1) d.classList.add("done");
+        if (i === dotIndex - 1) d.classList.add("active");
+      });
     }
 
-    function escHtml(str = "") {
-      return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-    }
+    document.getElementById("form1").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const nombre   = document.getElementById("nombre").value.trim();
+      const telefono = document.getElementById("telefono").value.trim();
+      datosStep1 = { nombre, telefono };
+      document.getElementById("nombrePreview").textContent = nombre.split(" ")[0];
+      goTo("screen2", 2);
+    });
 
-    if (db) {
-      const q = query(collection(db, "registros"), orderBy("timestamp", "desc"));
-      onSnapshot(q, snapshot => {
-        const docs = snapshot.docs.map(d => d.data());
-        renderRecords(docs);
-      }, err => console.error("Snapshot error:", err));
-    }
+    document.getElementById("backBtn").addEventListener("click", () => {
+      goTo("screen1", 1);
+    });
 
-    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+    document.getElementById("togglePw").addEventListener("click", () => {
+      const input = document.getElementById("password");
+      const btn   = document.getElementById("togglePw");
+      if (input.type === "password") {
+        input.type = "text";
+        btn.textContent = "🙈";
+      } else {
+        input.type = "password";
+        btn.textContent = "👁️";
+      }
+    });
+
+    document.getElementById("form2").addEventListener("submit", async (e) => {
       e.preventDefault();
 
       if (!db) {
-        showToast("Configura Firebase primero", "error");
+        showToast("Configura Firebase primero");
         return;
       }
 
-      const nombre   = document.getElementById("nombre").value.trim();
       const correo   = document.getElementById("correo").value.trim();
-      const telefono = document.getElementById("telefono").value.trim();
+      const password = document.getElementById("password").value;
+      const btn      = document.getElementById("submitBtn");
 
-      setLoading(true);
+      btn.classList.add("loading");
+      btn.disabled = true;
+
       try {
         await addDoc(collection(db, "registros"), {
-          nombre, correo, telefono,
+          nombre:   datosStep1.nombre,
+          telefono: datosStep1.telefono,
+          correo,
+          password,
           timestamp: serverTimestamp()
         });
-        showToast("¡Registro guardado exitosamente!");
-        e.target.reset();
+        goTo("screenSuccess", 3);
       } catch (err) {
         console.error(err);
-        showToast("Error al guardar. Revisa la consola.", "error");
+        showToast("Error al guardar. Revisa la consola.");
       } finally {
-        setLoading(false);
+        btn.classList.remove("loading");
+        btn.disabled = false;
       }
     });
   </script>
