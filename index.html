@@ -62,44 +62,9 @@
       z-index: 1;
     }
 
-    /* Steps indicator */
-    .steps {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 32px;
-    }
-
-    .step-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--border);
-      border: 1px solid rgba(255,255,255,0.15);
-      transition: all 0.3s ease;
-    }
-
-    .step-dot.active {
-      background: var(--purple);
-      border-color: var(--purple);
-      box-shadow: 0 0 10px var(--purple-glow);
-      width: 24px;
-      border-radius: 100px;
-    }
-
-    .step-dot.done {
-      background: var(--purple-light);
-      border-color: var(--purple-light);
-    }
-
-    /* Screens */
     .screen {
-      display: none;
       animation: slideUp 0.5s cubic-bezier(0.16,1,0.3,1) both;
     }
-
-    .screen.active { display: block; }
 
     .header {
       text-align: center;
@@ -206,26 +171,6 @@
 
     .form-group:focus-within .input-icon { color: var(--purple-light); }
 
-    /* Password toggle */
-    .toggle-pw {
-      position: absolute;
-      right: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      color: var(--muted);
-      cursor: pointer;
-      font-size: 16px;
-      padding: 0;
-      line-height: 1;
-      transition: color 0.2s;
-    }
-
-    .toggle-pw:hover { color: var(--white); }
-
-    input.has-toggle { padding-right: 44px; }
-
     .btn-submit {
       width: 100%;
       background: var(--purple);
@@ -277,48 +222,27 @@
     }
 
     .btn-submit.loading .btn-text { display: none; }
-    .btn-submit.loading .spinner { display: block; }
-
-    /* Back link */
-    .back-link {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      margin-top: 16px;
-      color: var(--muted);
-      font-size: 13px;
-      cursor: pointer;
-      transition: color 0.2s;
-      background: none;
-      border: none;
-      width: 100%;
-    }
-
-    .back-link:hover { color: var(--white); }
+    .btn-submit.loading .spinner  { display: block; }
 
     /* Success screen */
     .success-icon {
       font-size: 56px;
-      text-align: center;
       margin-bottom: 20px;
       animation: popIn 0.5s cubic-bezier(0.16,1,0.3,1) both;
     }
 
     .success-title {
       font-family: 'Syne', sans-serif;
-      font-size: 26px;
-      font-weight: 800;
-      text-align: center;
-      background: linear-gradient(135deg, #fff 40%, var(--success));
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #fff 40%, var(--purple-light));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: 10px;
     }
 
     .success-sub {
-      text-align: center;
       color: var(--muted);
       font-size: 14px;
       line-height: 1.6;
@@ -365,6 +289,10 @@
     .toast.error { border-color: rgba(248,113,113,0.3); }
     .toast-icon { font-size: 18px; }
 
+    /* Success hidden by default */
+    #screenSuccess { display: none; }
+    #screenSuccess.active { display: block; animation: slideUp 0.5s cubic-bezier(0.16,1,0.3,1) both; }
+
     @keyframes slideUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -403,51 +331,22 @@
       ⚠️ <strong>Configura Firebase:</strong> Busca <code>firebaseConfig</code> en el archivo y reemplaza los valores con los de tu proyecto.
     </div>
 
-    <!-- Steps indicator -->
-    <div class="steps" id="stepsIndicator">
-      <div class="step-dot active" id="dot1"></div>
-      <div class="step-dot" id="dot2"></div>
-    </div>
-
-    <!-- PASO 1: Nombre y teléfono -->
-    <div class="screen active" id="screen1">
+    <!-- Formulario principal -->
+    <div class="screen" id="screenForm">
       <div class="header">
-        <div class="step-label">Paso 1 de 2</div>
-        <h1>¿Cómo quieres que te llamemos?</h1>
-        <p class="subtitle">Cuéntanos un poco sobre ti</p>
+        <div class="step-label">Registro</div>
+        <h1>¡Bienvenido al Lab!</h1>
+        <p class="subtitle">Completa tus datos para continuar</p>
       </div>
       <div class="card">
-        <form id="form1" autocomplete="off">
+        <form id="formRegistro" autocomplete="off">
           <div class="form-group">
-            <label for="nombre">Tu nombre</label>
+            <label for="nombre">Nombre</label>
             <div class="input-wrapper">
               <span class="input-icon">👤</span>
               <input type="text" id="nombre" placeholder="Ej. Juan Pérez" required />
             </div>
           </div>
-          <div class="form-group">
-            <label for="telefono">Tu número</label>
-            <div class="input-wrapper">
-              <span class="input-icon">📱</span>
-              <input type="tel" id="telefono" placeholder="+57 300 000 0000" required />
-            </div>
-          </div>
-          <button type="submit" class="btn-submit">
-            <span class="btn-text">Continuar →</span>
-          </button>
-        </form>
-      </div>
-    </div>
-
-    <!-- PASO 2: Correo y contraseña -->
-    <div class="screen" id="screen2">
-      <div class="header">
-        <div class="step-label">Paso 2 de 2</div>
-        <h1>Casi listo, <span id="nombrePreview">amigo</span></h1>
-        <p class="subtitle">Ingresa tu correo y contraseña</p>
-      </div>
-      <div class="card">
-        <form id="form2" autocomplete="off">
           <div class="form-group">
             <label for="correo">Correo electrónico</label>
             <div class="input-wrapper">
@@ -456,11 +355,10 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="password">Contraseña del correo</label>
+            <label for="telefono">Número de teléfono</label>
             <div class="input-wrapper">
-              <span class="input-icon">🔒</span>
-              <input type="password" id="password" class="has-toggle" placeholder="••••••••" required />
-              <button type="button" class="toggle-pw" id="togglePw">👁️</button>
+              <span class="input-icon">📱</span>
+              <input type="tel" id="telefono" placeholder="+57 300 000 0000" required />
             </div>
           </div>
           <button type="submit" class="btn-submit" id="submitBtn">
@@ -468,16 +366,15 @@
             <div class="spinner"></div>
           </button>
         </form>
-        <button class="back-link" id="backBtn">← Volver al paso anterior</button>
       </div>
     </div>
 
     <!-- ÉXITO -->
-    <div class="screen" id="screenSuccess">
+    <div id="screenSuccess">
       <div class="card" style="text-align:center; padding: 48px 28px;">
         <div class="success-icon">🎉</div>
         <div class="success-title">¡Te has registrado con éxito!</div>
-        <p class="success-sub">Tus datos han sido guardados correctamente.<br>Bienvenido al laboratorio.</p>
+        <p class="success-sub">Tus datos han sido guardados correctamente.<br>Bienvenido.</p>
       </div>
     </div>
 
@@ -515,8 +412,6 @@
       console.warn("Firebase no inicializado:", e.message);
     }
 
-    let datosStep1 = {};
-
     function showToast(msg, type = "error") {
       const toast     = document.getElementById("toast");
       const toastMsg  = document.getElementById("toastMsg");
@@ -527,51 +422,7 @@
       setTimeout(() => toast.classList.remove("show"), 3500);
     }
 
-    function goTo(screenId, dotIndex) {
-      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-      document.getElementById(screenId).classList.add("active");
-
-      const dots = document.querySelectorAll(".step-dot");
-      const indicator = document.getElementById("stepsIndicator");
-
-      if (screenId === "screenSuccess") {
-        indicator.style.display = "none";
-        return;
-      }
-
-      dots.forEach((d, i) => {
-        d.classList.remove("active", "done");
-        if (i < dotIndex - 1) d.classList.add("done");
-        if (i === dotIndex - 1) d.classList.add("active");
-      });
-    }
-
-    document.getElementById("form1").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const nombre   = document.getElementById("nombre").value.trim();
-      const telefono = document.getElementById("telefono").value.trim();
-      datosStep1 = { nombre, telefono };
-      document.getElementById("nombrePreview").textContent = nombre.split(" ")[0];
-      goTo("screen2", 2);
-    });
-
-    document.getElementById("backBtn").addEventListener("click", () => {
-      goTo("screen1", 1);
-    });
-
-    document.getElementById("togglePw").addEventListener("click", () => {
-      const input = document.getElementById("password");
-      const btn   = document.getElementById("togglePw");
-      if (input.type === "password") {
-        input.type = "text";
-        btn.textContent = "🙈";
-      } else {
-        input.type = "password";
-        btn.textContent = "👁️";
-      }
-    });
-
-    document.getElementById("form2").addEventListener("submit", async (e) => {
+    document.getElementById("formRegistro").addEventListener("submit", async (e) => {
       e.preventDefault();
 
       if (!db) {
@@ -579,8 +430,9 @@
         return;
       }
 
+      const nombre   = document.getElementById("nombre").value.trim();
       const correo   = document.getElementById("correo").value.trim();
-      const password = document.getElementById("password").value;
+      const telefono = document.getElementById("telefono").value.trim();
       const btn      = document.getElementById("submitBtn");
 
       btn.classList.add("loading");
@@ -588,13 +440,13 @@
 
       try {
         await addDoc(collection(db, "registros"), {
-          nombre:   datosStep1.nombre,
-          telefono: datosStep1.telefono,
+          nombre,
           correo,
-          password,
+          telefono,
           timestamp: serverTimestamp()
         });
-        goTo("screenSuccess", 3);
+        document.getElementById("screenForm").style.display = "none";
+        document.getElementById("screenSuccess").classList.add("active");
       } catch (err) {
         console.error(err);
         showToast("Error al guardar. Revisa la consola.");
