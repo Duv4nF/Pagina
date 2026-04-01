@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registro · Lab</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --border: rgba(255,255,255,0.08);
+      --purple: #7c5cfc;
+      --purple-light: #a68cfd;
+      --purple-glow: rgba(124, 92, 252, 0.25);
+      --white: #ffffff;
+      --muted: rgba(255,255,255,0.45);
+      --input-bg: rgba(255,255,255,0.04);
+      --success: #4ade80;
+      --error: #f87171;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+
+    /* Animated background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 70% 30%, rgba(124,92,252,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 20% 80%, rgba(92,124,252,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Colombia map SVG background watermark */
+    .map-bg {
+      position: fixed;
+      right: -60px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 380px;
+      opacity: 0.04;
+      pointer-events: none;
+      filter: blur(0.5px);
+    }
+
+    .page-wrapper {
+      width: 100%;
+      max-width: 460px;
+      padding: 24px 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 36px;
+      animation: slideDown 0.6s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .logo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--purple-glow);
+      border: 1px solid rgba(124,92,252,0.3);
+      border-radius: 100px;
+      padding: 6px 16px;
+      margin-bottom: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--purple-light);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .logo-dot {
+      width: 6px; height: 6px;
+      background: var(--purple);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      background: linear-gradient(135deg, #fff 40%, var(--purple-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 300;
+    }
+
+    /* Card */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 28px;
+      animation: slideUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.1s both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--purple), transparent);
+      opacity: 0.5;
+    }
+
+    /* Form groups */
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 8px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 16px;
+      pointer-events: none;
+      transition: color 0.2s;
+    }
+
+    input {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px 14px 44px;
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      outline: none;
+      transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+      -webkit-appearance: none;
+    }
+
+    input::placeholder { color: rgba(255,255,255,0.2); }
+
+    input:focus {
+      border-color: var(--purple);
+      background: rgba(124,92,252,0.06);
+      box-shadow: 0 0 0 4px var(--purple-glow);
+    }
+
+    input:focus + .input-border { opacity: 1; }
+
+    .form-group:focus-within .input-icon { color: var(--purple-light); }
+
+    /* Submit button */
+    .btn-submit {
+      width: 100%;
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 15px;
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      margin-top: 8px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.15s, box-shadow 0.25s, background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-submit::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .btn-submit:hover {
+      background: var(--purple-light);
+      box-shadow: 0 8px 32px rgba(124,92,252,0.45);
+      transform: translateY(-1px);
+    }
+
+    .btn-submit:hover::before { opacity: 1; }
+    .btn-submit:active { transform: translateY(0); }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* Spinner */
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+
+    .btn-submit.loading .btn-text { display: none; }
+    .btn-submit.loading .spinner { display: block; }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+      z-index: 100;
+      min-width: 260px;
+      white-space: nowrap;
+    }
+
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.success { border-color: rgba(74,222,128,0.3); }
+    .toast.error { border-color: rgba(248,113,113,0.3); }
+    .toast-icon { font-size: 18px; }
+
+    /* Records panel */
+    .records-section {
+      margin-top: 24px;
+      animation: slideUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.2s both;
+    }
+
+    .records-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .records-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .records-count {
+      background: var(--purple-glow);
+      border: 1px solid rgba(124,92,252,0.2);
+      color: var(--purple-light);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 100px;
+    }
+
+    .records-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 280px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .record-item {
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      animation: slideUp 0.4s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .record-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .record-details {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .record-detail {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .record-detail span {
+      color: rgba(255,255,255,0.7);
+      margin-left: 4px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 24px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* Divider */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+
+    /* Config notice */
+    .config-notice {
+      background: rgba(248,113,113,0.08);
+      border: 1px solid rgba(248,113,113,0.2);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 13px;
+      color: #fca5a5;
+      margin-bottom: 20px;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .config-notice.show { display: block; }
+    .config-notice strong { color: var(--error); }
+
+    /* Keyframes */
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .card { padding: 24px 20px; border-radius: 16px; }
+      h1 { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Colombia map watermark (simplified outline SVG) -->
+  <svg class="map-bg" viewBox="0 0 300 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M150,20 C130,22 110,30 100,45 C85,60 80,80 75,100 C65,120 50,130 40,150
+             C30,170 35,195 45,215 C55,235 60,255 55,280 C50,305 45,330 60,350
+             C75,370 100,375 125,370 C150,365 170,350 185,330
+             C200,310 205,285 210,260 C215,235 225,215 235,195
+             C245,175 250,150 240,130 C230,110 215,95 210,75
+             C205,55 215,35 200,25 C185,15 165,18 150,20Z"
+          stroke="white" stroke-width="4" fill="none"/>
+  </svg>
+
+  <div class="page-wrapper">
+    <div class="header">
+      <div class="logo-badge">
+        <div class="logo-dot"></div>
+        Laboratorio · Universidad
+      </div>
+      <h1>Crea tu registro</h1>
+      <p class="subtitle">Completa el formulario para guardar tus datos</p>
+    </div>
+
+    <!-- Firebase config notice -->
+    <div class="config-notice" id="configNotice">
+      ⚠️ <strong>Configura Firebase:</strong> Abre el archivo, busca <code>firebaseConfig</code> y reemplaza los valores con los de tu proyecto Firebase. Sigue la guía incluida abajo.
+    </div>
+
+    <div class="card">
+      <form id="registerForm" autocomplete="off">
+
+        <!-- Nombre -->
+        <div class="form-group">
+          <label for="nombre">Nombre completo</label>
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <input type="text" id="nombre" placeholder="Ej. Juan Pérez" required />
+          </div>
+        </div>
+
+        <!-- Correo -->
+        <div class="form-group">
+          <label for="correo">Correo electrónico</label>
+          <div class="input-wrapper">
+            <span class="input-icon">✉️</span>
+            <input type="email" id="correo" placeholder="correo@ejemplo.com" required />
+          </div>
+        </div>
+
+        <!-- Teléfono -->
+        <div class="form-group">
+          <label for="telefono">Teléfono</label>
+          <div class="input-wrapper">
+            <span class="input-icon">📱</span>
+            <input type="tel" id="telefono" placeholder="+57 300 000 0000" required />
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">
+          <span class="btn-text">Guardar registro →</span>
+          <div class="spinner"></div>
+        </button>
+      </form>
+    </div>
+
+    <!-- Records section -->
+    <div class="records-section">
+      <hr class="divider"/>
+      <div class="records-header">
+        <span class="records-title">📋 Registros guardados</span>
+        <span class="records-count" id="recordsCount">0</span>
+      </div>
+      <div class="records-list" id="recordsList">
+        <div class="empty-state">Aún no hay registros. ¡Sé el primero! 🚀</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <span class="toast-icon" id="toastIcon"></span>
+    <span id="toastMsg"></span>
+  </div>
+
+  <!-- ============================================================
+       FIREBASE SDK  (v9 compat — funciona con HTML estático)
+       ============================================================ -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getFirestore, collection, addDoc, onSnapshot,
+      query, orderBy, serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // ════════════════════════════════════════════════════════════
+    //  ⚠️  REEMPLAZA ESTOS VALORES CON LOS DE TU PROYECTO FIREBASE
+    //      (Paso 3 de la guía)
+    // ════════════════════════════════════════════════════════════
+    const firebaseConfig = {
+      apiKey:            "AIzaSyCcXao1LiyjOeWAcP3QCHAf2I9O7wWenKc",
+      authDomain:        "pagina-6b6f1.firebaseapp.com",
+      projectId:         "pagina-6b6f1",
+      storageBucket:     "pagina-6b6f1.firebasestorage.app",
+      messagingSenderId: "148152543880",
+      appId:            "1:148152543880:web:34c096aacc6da572294d3d"
+    };
+    // ════════════════════════════════════════════════════════════
+
+    // ── Detectar si aún está sin configurar ──
+    if (firebaseConfig.apiKey === "TU_API_KEY") {
+      document.getElementById("configNotice").classList.add("show");
+    }
+
+    let app, db;
+    try {
+      app = initializeApp(firebaseConfig);
+      db  = getFirestore(app);
+    } catch (e) {
+      console.warn("Firebase no inicializado:", e.message);
+    }
+
+    // ── UI helpers ────────────────────────────────────────────
+    function showToast(msg, type = "success") {
+      const toast   = document.getElementById("toast");
+      const toastMsg  = document.getElementById("toastMsg");
+      const toastIcon = document.getElementById("toastIcon");
+      toastMsg.textContent  = msg;
+      toastIcon.textContent = type === "success" ? "✅" : "❌";
+      toast.className = `toast ${type} show`;
+      setTimeout(() => toast.classList.remove("show"), 3500);
+    }
+
+    function setLoading(on) {
+      const btn = document.getElementById("submitBtn");
+      btn.classList.toggle("loading", on);
+      btn.disabled = on;
+    }
+
+    function renderRecords(docs) {
+      const list  = document.getElementById("recordsList");
+      const count = document.getElementById("recordsCount");
+      count.textContent = docs.length;
+
+      if (docs.length === 0) {
+        list.innerHTML = '<div class="empty-state">Aún no hay registros. ¡Sé el primero! 🚀</div>';
+        return;
+      }
+
+      list.innerHTML = docs.map((d, i) => `
+        <div class="record-item" style="animation-delay:${i * 0.05}s">
+          <div class="record-name">${escHtml(d.nombre)}</div>
+          <div class="record-details">
+            <div class="record-detail">✉️ <span>${escHtml(d.correo)}</span></div>
+            <div class="record-detail">📱 <span>${escHtml(d.telefono)}</span></div>
+          </div>
+        </div>`).join("");
+    }
+
+    function escHtml(str = "") {
+      return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    }
+
+    // ── Escuchar cambios en tiempo real ───────────────────────
+    if (db) {
+      const q = query(collection(db, "registros"), orderBy("timestamp", "desc"));
+      onSnapshot(q, snapshot => {
+        const docs = snapshot.docs.map(d => d.data());
+        renderRecords(docs);
+      }, err => console.error("Snapshot error:", err));
+    }
+
+    // ── Envío del formulario ───────────────────────────────────
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      if (!db) {
+        showToast("Configura Firebase primero (ver aviso arriba)", "error");
+        return;
+      }
+
+      const nombre   = document.getElementById("nombre").value.trim();
+      const correo   = document.getElementById("correo").value.trim();
+      const telefono = document.getElementById("telefono").value.trim();
+
+      setLoading(true);
+      try {
+        await addDoc(collection(db, "registros"), {
+          nombre, correo, telefono,
+          timestamp: serverTimestamp()
+        });
+        showToast("¡Registro guardado exitosamente!");
+        e.target.reset();
+      } catch (err) {
+        console.error(err);
+        showToast("Error al guardar. Revisa la consola.", "error");
+      } finally {
+        setLoading(false);
+      }
+    });
+  </script>
+</body>
+</html>
